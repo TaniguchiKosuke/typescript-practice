@@ -75,3 +75,6 @@ function test(arg) {
 }
 test("hello world");
 test(1000);
+var originalStr = "Hello World";
+console.log(originalStr);
+console.log(typeof originalStr);

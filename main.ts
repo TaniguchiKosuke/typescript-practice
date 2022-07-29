@@ -75,3 +75,8 @@ function test<T>(arg: T): T {
 
 test<string>("hello world")
 test<number>(1000)
+
+type MyOriginalType = string
+let originalStr: MyOriginalType = "Hello World"
+console.log(originalStr)
+console.log(typeof originalStr)
