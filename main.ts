@@ -51,14 +51,27 @@ function returnVoid(): void{
 returnVoid()
 
 interface MyFoo {
-    method: ()=> void;
+    method: ()=> void
   }
   
   class Foo {
     method(): void {
-      console.log('Hello, world!');
+      console.log('Hello, world!')
     }
   }
   
   const obj: MyFoo = new Foo();
   const obj2: Foo = obj;
+  obj.method()
+  console.log(obj)
+  obj2.method()
+  console.log(obj2)
+
+// ジェネリクス
+function test<T>(arg: T): T {
+    console.log(arg)
+    return arg
+}
+
+test<string>("hello world")
+test<number>(1000)
