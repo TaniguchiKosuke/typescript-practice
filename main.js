@@ -99,7 +99,6 @@ var CarHandler = /** @class */ (function () {
     };
     return CarHandler;
 }());
-// Usecase
 var CarUsecase = /** @class */ (function () {
     function CarUsecase(carRepository) {
         this.carRepository = carRepository;
@@ -110,7 +109,6 @@ var CarUsecase = /** @class */ (function () {
     };
     return CarUsecase;
 }());
-// Repository
 var CarRepository = /** @class */ (function () {
     function CarRepository(dbConn) {
         this.dbConnection = dbConn;

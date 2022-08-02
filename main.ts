@@ -106,8 +106,8 @@ class Car {
 
 // Handler
 class CarHandler {
-    private carUsecase: CarUsecase
-    constructor(carUsecase: CarUsecase) {
+    private carUsecase: ICarUsecase
+    constructor(carUsecase: ICarUsecase) {
         this.carUsecase = carUsecase
     }
 
@@ -118,9 +118,13 @@ class CarHandler {
 }
 
 // Usecase
-class CarUsecase {
-    carRepository: CarRepository
-    constructor(carRepository: CarRepository) {
+interface ICarUsecase {
+    createCar(id: string, carName: string, speed: string): Car
+}
+
+class CarUsecase implements ICarUsecase {
+    carRepository: ICarRepository
+    constructor(carRepository: ICarRepository) {
         this.carRepository = carRepository
     }
 
@@ -131,7 +135,10 @@ class CarUsecase {
 }
 
 // Repository
-class CarRepository {
+interface ICarRepository {
+    createCar(id: string, carName: string, speed: string): Car
+}
+class CarRepository implements ICarRepository {
     private dbConnection: DBConnection
     constructor(dbConn: DBConnection) {
         this.dbConnection = dbConn
