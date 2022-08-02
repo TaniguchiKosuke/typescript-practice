@@ -117,11 +117,7 @@ var CarRepository = /** @class */ (function () {
     }
     CarRepository.prototype.createCar = function (id, carName, speed) {
         var newCar = new Car(id, carName, speed);
-        this.dbConnection.database.push({
-            id: newCar.id,
-            carName: newCar.carName,
-            speed: newCar.speed
-        });
+        this.dbConnection.database.push(newCar);
         return newCar;
     };
     return CarRepository;
@@ -138,5 +134,11 @@ var dbConn = new DBConnection(database);
 var carRepository = new CarRepository(dbConn);
 var carUsecase = new CarUsecase(carRepository);
 var carHandler = new CarHandler(carUsecase);
-console.log(carHandler.createCar("0", "toyota", "200"));
+carHandler.createCar("0", "toyota", "200");
+carHandler.createCar("1", "nissan", "300");
+carHandler.createCar("2", "mazda", "100");
 console.log(database);
+for (var _i = 0, database_1 = database; _i < database_1.length; _i++) {
+    var car = database_1[_i];
+    car.run();
+}

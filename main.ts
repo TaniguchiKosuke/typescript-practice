@@ -138,36 +138,30 @@ class CarRepository {
     }
     public createCar(id: string, carName: string, speed: string): Car {
         const newCar = new Car(id, carName, speed)
-        this.dbConnection.database.push(
-            {
-                id: newCar.id,
-                carName: newCar.carName,
-                speed: newCar.speed
-            }
-        )
+        this.dbConnection.database.push(newCar)
         return newCar
     }
 }
 
-interface ICar {
-    id: string
-    carName: string
-    speed: string
-}
 
 class DBConnection {
-    public database: ICar[]
-    constructor(iCar: ICar[]) {
+    public database: Car[]
+    constructor(iCar: Car[]) {
         this.database = iCar
     }
 }
 
 // Dependency Injection
-const database: ICar[] = []
+const database: Car[] = []
 const dbConn = new DBConnection(database)
 const carRepository = new CarRepository(dbConn)
 const carUsecase = new CarUsecase(carRepository)
 const carHandler = new CarHandler(carUsecase)
 
-console.log(carHandler.createCar("0", "toyota", "200"))
+carHandler.createCar("0", "toyota", "200")
+carHandler.createCar("1", "nissan", "300")
+carHandler.createCar("2", "mazda", "100")
 console.log(database)
+for (let car of database) {
+    car.run()
+}
