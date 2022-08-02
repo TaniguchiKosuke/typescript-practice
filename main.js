@@ -40,41 +40,103 @@ var SuperPerson = /** @class */ (function (_super) {
     return SuperPerson;
 }(Person));
 var kosuke = new Person("kosuke", 21, "Japan");
-console.log(kosuke.walk());
-console.log(kosuke.profile());
 var superkosuke = new SuperPerson("kosuke", 21, "Japan", "I am a software engineer");
-console.log(superkosuke.AboutSuperPerson());
 function buildName(firstName, lastName) {
     if (lastName === void 0) { lastName = "Taniguchi"; }
     return firstName + " " + lastName;
 }
-console.log(buildName("Kosuke"));
-console.log(buildName("Kosuke", "Suzuki"));
-function returnVoid() {
-    console.log("return void");
-}
-returnVoid();
 var Foo = /** @class */ (function () {
     function Foo() {
     }
     Foo.prototype.method = function () {
-        console.log('Hello, world!');
     };
     return Foo;
 }());
 var obj = new Foo();
 var obj2 = obj;
 obj.method();
-console.log(obj);
 obj2.method();
-console.log(obj2);
 // ジェネリクス
 function test(arg) {
-    console.log(arg);
     return arg;
 }
 test("hello world");
 test(1000);
 var originalStr = "Hello World";
-console.log(originalStr);
-console.log(typeof originalStr);
+var User = /** @class */ (function () {
+    function User(username, password) {
+        this.username = username;
+        this.password = password;
+    }
+    return User;
+}());
+var user = {
+    username: "kosuke",
+    password: "aaa"
+};
+var userObj = new User("kosuke", "aaa");
+// clean architectureぽく
+// entity
+var Car = /** @class */ (function () {
+    function Car(id, carName, speed) {
+        this.id = id;
+        this.carName = carName;
+        this.speed = speed;
+    }
+    Car.prototype.run = function () {
+        console.log("".concat(this.carName, " is running at ").concat(this.speed, " km/h"));
+    };
+    return Car;
+}());
+// Handler
+var CarHandler = /** @class */ (function () {
+    function CarHandler(carUsecase) {
+        this.carUsecase = carUsecase;
+    }
+    CarHandler.prototype.createCar = function (id, carName, speed) {
+        var createdCar = this.carUsecase.createCar(id, carName, speed);
+        return createdCar;
+    };
+    return CarHandler;
+}());
+// Usecase
+var CarUsecase = /** @class */ (function () {
+    function CarUsecase(carRepository) {
+        this.carRepository = carRepository;
+    }
+    CarUsecase.prototype.createCar = function (id, carName, speed) {
+        var createdCar = this.carRepository.createCar(id, carName, speed);
+        return createdCar;
+    };
+    return CarUsecase;
+}());
+// Repository
+var CarRepository = /** @class */ (function () {
+    function CarRepository(dbConn) {
+        this.dbConnection = dbConn;
+    }
+    CarRepository.prototype.createCar = function (id, carName, speed) {
+        var newCar = new Car(id, carName, speed);
+        this.dbConnection.database.push({
+            id: newCar.id,
+            carName: newCar.carName,
+            speed: newCar.speed
+        });
+        return newCar;
+    };
+    return CarRepository;
+}());
+var DBConnection = /** @class */ (function () {
+    function DBConnection(iCar) {
+        this.database = iCar;
+    }
+    return DBConnection;
+}());
+// Dependency Injection
+var database = [];
+var dbConn = new DBConnection(database);
+var carRepository = new CarRepository(dbConn);
+var carUsecase = new CarUsecase(carRepository);
+var carHandler = new CarHandler(carUsecase);
+console.log(carHandler.createCar("0", "toyota", "200"));
+console.log(database);
